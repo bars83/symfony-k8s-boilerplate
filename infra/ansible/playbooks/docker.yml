@@ -1,0 +1,25 @@
+---
+# install docker engine
+- name: Install docker engine
+  become: true
+  hosts: docker
+  roles:
+    - role: marvinpinto.docker
+      tags: docker
+      become: true
+  tasks:
+    - name: 'Ensure that the docker daemon is functional'
+      become: true
+      docker_ping:
+      retries: 5
+      delay: 10
+      until: result|success
+    - name: 'Rancher'
+      docker_container:
+        name: 'rancher'
+        image: 'rancher/rancher:v2.3.0'
+        state: 'started'
+        restart_policy: unless-stopped
+        ports:
+          - '80:80'
+          - '443:443'

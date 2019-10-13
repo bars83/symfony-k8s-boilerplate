@@ -1,0 +1,34 @@
+---
+- hosts: 'localhost'
+  roles:
+    - role: 'ansible-role-docker'
+      become: true
+  tasks:
+    - name: 'Ensure that the docker daemon is functional'
+      become: true
+      docker_ping:
+      register: result
+      retries: 5
+      delay: 10
+      until: result|success
+
+    - name: 'Pull in the latest nginx container'
+      become: true
+      docker_image:
+        name: 'nginx:latest'
+
+    - name: 'Start the nginx container'
+      become: true
+      docker_container:
+        name: 'nginx'
+        image: 'nginx:latest'
+        state: 'started'
+
+    - name: 'Ensure that the docker daemon is functional specifically through /var/run/docker.sock'
+      become: true
+      docker_ping:
+        unix_socket: '/var/run/docker.sock'
+      register: result
+      retries: 5
+      delay: 10
+      until: result|success
