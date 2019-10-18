@@ -1,0 +1,7 @@
+infra/ansible/roles
+infra/k8s-monitoring
+infra/k8s-ingress
+infra/kubespray
+infra/kubespray-cluster-vars/artifacts
+infra/kubespray-cluster-vars/credentials
+

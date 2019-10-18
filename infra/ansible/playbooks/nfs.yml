@@ -1,0 +1,9 @@
+---
+# provision NFS server
+- name: Provision NFS server
+  become: true
+  hosts: nfs
+  roles:
+    - role: geerlingguy.nfs
+      vars:
+        nfs_exports: [ "/mnt/disks/sdb/common *(rw,sync,no_root_squash)", "/mnt/disks/sdb/prometheus *(rw,sync,no_root_squash)", "/mnt/disks/sdb/elasticsearch *(rw,sync,no_root_squash)", "/mnt/disks/sdb/postgres *(rw,sync,no_root_squash)" ]

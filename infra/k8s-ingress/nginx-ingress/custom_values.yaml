@@ -1,0 +1,4 @@
+controller:
+  service:
+    externalIPs: 
+      - 35.209.46.30

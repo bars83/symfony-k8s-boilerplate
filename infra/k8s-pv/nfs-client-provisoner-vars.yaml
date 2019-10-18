@@ -1,0 +1,2 @@
+nfs.server=10.128.15.212
+nfs.path=/mnt/disks/sdb/common
