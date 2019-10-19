@@ -55,7 +55,7 @@ k8s
     * `mkdir elasticsearch`
     * `mkdir postgres`
     * `sudo apt update && sudo apt install -y nfs-common`
-    * `helm install --name nfs-client-provisioner --set nfs.server=10.128.15.212 --set nfs.path=/mnt/disks/sdb/common stable/nfs-client-provisioner`
+    * `helm install --name nfs-client-provisioner --namespace kube-system --set nfs.server=10.128.15.212 --set nfs.path=/mnt/disks/sdb/common --set storageClass.defaultClass=true stable/nfs-client-provisioner`
     * `cd ./infra/k8s-monitoring/prometheus-chart && helm upgrade prom . -f custom_values.yaml --install`
     * `cd ./mattermost && helm install --name mattermost -f custom.yaml mattermost/mattermost-team-edition`
  
@@ -64,6 +64,27 @@ k8s
  helm repo add jetstack https://charts.jetstack.io
  helm install --name cert-manager --namespace cert-manager jetstack/cert-manager
 
+    * `cd ./infra/k8s-ingress/nginx-ingress && helm install . -f custom_values.yaml --namespace kube-system --name nginx-ingress`
+
+    * `kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml`
+    * `helm repo add jetstack https://charts.jetstack.io`
+    * `helm install --name cert-manager --namespace cert-manager jetstack/cert-manager`
+    * `kubectl label namespace cert-manager certmanager.k8s.io/disable-validation="true"`
+    *
+
+
+    * `helm install stable/cert-manager \
+    --namespace kube-system \
+    --set ingressShim.defaultIssuerName=letsencrypt-prod \
+    --set ingressShim.defaultIssuerKind=ClusterIssuer \
+    --version v0.5.2`
+    * ``
+    * ``
+    
+    
+    
+    
+    * `helm install mattermost/mattermost-team-edition --set mysql.mysqlUser=********** --set mysql.mysqlPassword==**********`
 
 * разобраться с Persistant Volume на NFS
 * terraform
