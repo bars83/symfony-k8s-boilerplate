@@ -369,7 +369,7 @@ server:
     ## Must be provided if Ingress is enabled
     ##
     hosts:
-     - reddit-prometheus
+     - prometheus.kubeplay.website
 
     ## Prometheus server Ingress TLS configuration
     ## Secrets must be manually created in the namespace
@@ -433,7 +433,7 @@ server:
     ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
     ##   GKE, AWS & OpenStack)
     ##
-    storageClass: "nfs-client"
+    # storageClass: "nfs-client"
 
     ## Subdirectory of Prometheus server data Persistent Volume to mount
     ## Useful if the volume's root directory is not empty
