@@ -57,6 +57,14 @@ k8s
     * `sudo apt update && sudo apt install -y nfs-common`
     * `helm install --name nfs-client-provisioner --set nfs.server=10.128.15.212 --set nfs.path=/mnt/disks/sdb/common stable/nfs-client-provisioner`
     * `cd ./infra/k8s-monitoring/prometheus-chart && helm upgrade prom . -f custom_values.yaml --install`
+    * `cd ./mattermost && helm install --name mattermost -f custom.yaml mattermost/mattermost-team-edition`
+ 
+ kubectl apply     -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml
+ 
+ helm repo add jetstack https://charts.jetstack.io
+ helm install --name cert-manager --namespace cert-manager jetstack/cert-manager
+
+
 * разобраться с Persistant Volume на NFS
 * terraform
 * ~~ansible + vargant/gcp~~
