@@ -45,6 +45,7 @@ k8s
 
 * 4-6 виртуалок под ноды
 * 1 виртуалка как NFS сервер
+    * `cd infra/kubespray && ansible-playbook --flush-cache -i ../kubespray-cluster-vars/inventory.ini --become cluster.yml --private-key=~/.ssh/appuser`
     * `sudo lsblk`
     * `sudo mkfs.ext4 -m 0 -F -E lazy_itable_init=0,lazy_journal_init=0,discard /dev/sdb`
     * `sudo mkdir -p /mnt/disks/sdb`
@@ -59,7 +60,7 @@ k8s
     * `cd ./infra/k8s-monitoring/prometheus-chart && helm upgrade prom . -f custom_values.yaml --install`
     * `cd ./mattermost && helm install --name mattermost -f custom.yaml mattermost/mattermost-team-edition`
  
- kubectl apply     -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml
+ kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml
  
  helm repo add jetstack https://charts.jetstack.io
  helm install --name cert-manager --namespace cert-manager jetstack/cert-manager
