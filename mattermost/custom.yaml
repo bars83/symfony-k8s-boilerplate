@@ -20,6 +20,10 @@ configJSON:
     SiteURL: "https://mm.kubeplay.website"
   TeamSettings:
     SiteName: "Mattermost on kubeplay.website"
+    EnableOpenServer: false
+  EmailSettings:
+    EnableSignUpWithEmail: false
+  
 
 mysql:
   mysqlUser: mattermost

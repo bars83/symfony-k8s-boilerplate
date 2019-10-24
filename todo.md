@@ -58,9 +58,14 @@ k8s
     * `mkdir postgres`
     * `sudo apt update && sudo apt install -y nfs-common`
     * `helm install --name nfs-client-provisioner --namespace kube-system --set nfs.server=10.128.15.212 --set nfs.path=/mnt/disks/sdb/common --set storageClass.defaultClass=true stable/nfs-client-provisioner`
+    * `helm install --name nginx-ingress --namespace kube-system -f ./infra/k8s-ingress/custom_values.yaml stable/nginx-ingress`
     * `cd ./infra/k8s-monitoring/prometheus-chart && helm upgrade prom . -f custom_values.yaml --install`
-    * `cd ./mattermost && helm install --name mattermost -f custom.yaml mattermost/mattermost-team-edition`
- 
+    * `helm install --name mattermost -f ./mattermost/custom.yaml mattermost/mattermost-team-edition`
+    * `kubectl apply -f  ./infra/k8s-metrics/deploy/1.8+`
+    * `helm install --name prometheus -f ./infra/k8s-monitoring/my_values.yaml stable/prometheus`
+
+
+
  kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml
  
  helm repo add jetstack https://charts.jetstack.io
@@ -68,7 +73,7 @@ k8s
  kubectl apply -f infra/k8s-letsencrypt/letsencrypt.yaml
 
     * `cd ./infra/k8s-ingress/nginx-ingress && helm install . -f custom_values.yaml --namespace kube-system --name nginx-ingress`
-    * `helm install --name nginx-ingress --namespace kube-system -f custom_values.yaml stable/nginx-ingress`
+    * `helm install --name nginx-ingress --namespace kube-system -f ./infra/k8s-ingress/custom_values.yaml stable/nginx-ingress`
 
     * `kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml`
     * `helm repo add jetstack https://charts.jetstack.io`
@@ -158,3 +163,7 @@ containers:
           mountPath: /tmp
 
 
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+
+helm upgrade mattermost -f ./mattermost/custom.yaml mattermost/mattermost-team-edition
+helm install --name prometheus stable/prometheus
