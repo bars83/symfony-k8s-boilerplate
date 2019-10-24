@@ -643,7 +643,7 @@ server:
   ingress:
     ## If true, Prometheus server Ingress will be created
     ##
-    enabled: true
+    enabled: false
 
     ## Prometheus server Ingress annotations
     ##
@@ -651,6 +651,8 @@ server:
       kubernetes.io/ingress.class: "nginx"
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      kubernetes.io/tls-acme: "true"
+
 
     ## Prometheus server Ingress additional labels
     ##

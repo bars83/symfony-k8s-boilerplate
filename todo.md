@@ -62,9 +62,12 @@ k8s
     * `cd ./infra/k8s-monitoring/prometheus-chart && helm upgrade prom . -f custom_values.yaml --install`
     * `helm install --name mattermost -f ./mattermost/custom.yaml mattermost/mattermost-team-edition`
     * `kubectl apply -f  ./infra/k8s-metrics/deploy/1.8+`
-    * `helm install --name prometheus -f ./infra/k8s-monitoring/my_values.yaml stable/prometheus`
+    * `helm install --namespace monitoring --name prometheus -f ./infra/k8s-monitoring/prom_custom.yaml stable/prometheus`
+    * `helm install --namespace monitoring --name grafana -f ./infra/k8s-monitoring/grafana_custom.yaml stable/grafana`
+    * `kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo`
 
-
+export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
+  kubectl --namespace monitoring port-forward $POD_NAME 9090
 
  kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml
  
