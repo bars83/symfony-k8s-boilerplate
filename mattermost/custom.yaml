@@ -9,15 +9,15 @@ ingress:
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: letsencrypt-prod
   hosts:
-    - mattermost.kubeplay.website
+    - mm.kubeplay.website
   tls:
     - hosts:
-      - mattermost.kubeplay.website
+      - mm.kubeplay.website
       secretName: letsencrypt-prod
 
 configJSON:
   ServiceSettings:
-    SiteURL: "https://mattermost.kubeplay.website"
+    SiteURL: "https://mm.kubeplay.website"
   TeamSettings:
     SiteName: "Mattermost on kubeplay.website"
 

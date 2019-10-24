@@ -46,6 +46,7 @@ k8s
 * 4-6 виртуалок под ноды
 * 1 виртуалка как NFS сервер
     * `cd infra/kubespray && ansible-playbook --flush-cache -i ../kubespray-cluster-vars/inventory.ini --become cluster.yml --private-key=~/.ssh/appuser`
+    * `kubectl label nodes node1 external=true`
     * `sudo lsblk`
     * `sudo mkfs.ext4 -m 0 -F -E lazy_itable_init=0,lazy_journal_init=0,discard /dev/sdb`
     * `sudo mkdir -p /mnt/disks/sdb`
@@ -64,8 +65,10 @@ k8s
  
  helm repo add jetstack https://charts.jetstack.io
  helm install --name cert-manager --namespace cert-manager jetstack/cert-manager
+ kubectl apply -f infra/k8s-letsencrypt/letsencrypt.yaml
 
     * `cd ./infra/k8s-ingress/nginx-ingress && helm install . -f custom_values.yaml --namespace kube-system --name nginx-ingress`
+    * `helm install --name nginx-ingress --namespace kube-system -f custom_values.yaml stable/nginx-ingress`
 
     * `kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml`
     * `helm repo add jetstack https://charts.jetstack.io`
@@ -138,3 +141,20 @@ https://prometheus.kubeplay.website
 https://grafana.kubeplay.website
 
 https://kibana.kubeplay.website
+
+
+kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.1/manifests/metallb.yaml
+
+
+containers:
+      - name: metrics-server
+        image: k8s.gcr.io/metrics-server-amd64:v0.3.6
+        command:
+        - /metrics-server
+        - --kubelet-insecure-tls
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: tmp-dir
+          mountPath: /tmp
+
+
