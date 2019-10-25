@@ -1,0 +1,19 @@
+controller:
+  service:
+    type: NodePort
+    nodePorts:
+      http: 30665
+      https: 30177
+#   nodeSelector:
+#     external: "true"
+# controller:
+#   service:
+#     externalIPs: 
+#       - 35.224.39.248
+#     enableHttp: true
+#   nodeSelector:
+#     external: "true"
+    
+#defaultBackend:
+#  nodeSelector:
+#    external: "true"

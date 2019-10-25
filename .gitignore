@@ -2,3 +2,6 @@ infra/ansible/roles
 infra/kubespray
 infra/kubespray-cluster-vars/artifacts
 infra/kubespray-cluster-vars/credentials
+infra/k8s-monitoring/prometheus-chart
+!infra/k8s-metrics/deploy/1.8+/metrics-server-deployment.yaml
+infra/k8s-metrics
