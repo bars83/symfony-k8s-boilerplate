@@ -71,7 +71,11 @@ k8s
     * `kubectl label nodes node3 largemem=true`
     * `helm repo add gitlab https://charts.gitlab.io && helm repo update`
     * `helm fetch gitlab/gitlab --untar --untardir ./infra/gitlab/`
-    * `kubectl create secret generic gitlab-gitlab-initial-root-password --from-literal=password=$(head -c 512 /dev/urandom | LC_CTYPE=C tr -cd 'a-zA-Z0-9' | head -c 32) && kubectl get secret gitlab-gitlab-initial-root-password -ojsonpath='{.data.password}' | base64 --decode ; echo`
+    * `kubectl create namespace gitlab`
+    * `kubectl create secret -n gitlab generic gitlab-gitlab-initial-root-password --from-literal=password=$(head -c 512 /dev/urandom | LC_CTYPE=C tr -cd 'a-zA-Z0-9' | head -c 32) && kubectl get secret -n gitlab gitlab-gitlab-initial-root-password -ojsonpath='{.data.password}' | base64 --decode ; echo`
+    * `helm install --namespace gitlab --name gitlab -f ./infra/gitlab/custom_values.yaml gitlab/gitlab`
+    * `kubectl get secret -n gitlab gitlab-minio-secret -ojsonpath='{.data.accesskey}' | base64 --decode ; echo`
+    * `kubectl get secret -n gitlab gitlab-minio-secret -ojsonpath='{.data.secretkey}' | base64 --decode ; echo`
 
 
 

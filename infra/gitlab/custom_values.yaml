@@ -101,7 +101,7 @@ global:
 
   ## doc/charts/globals.md#configure-minio-settings
   minio:
-    enabled: false
+    enabled: true
     credentials: {}
       # secret:
 
@@ -333,7 +333,7 @@ global:
   kubectl:
     image:
       repository: registry.gitlab.com/gitlab-org/build/cng/kubectl
-      tag: v1.12.19
+      tag: v1.12.10
       pullSecrets: []
 ## End of global
 
@@ -538,15 +538,29 @@ grafana:
 ## Settings for individual sub-charts under GitLab
 ## Note: Many of these settings are configurable via globals
 # gitlab:
+#   task-runner:
+#     backups:
+#       objectStorage:
+#         config:
+#           secret: "backup-secret"
 ## doc/charts/gitlab/migrations
 #   migrations:
 #     enabled: false
 ## doc/charts/gitlab/unicorn
-#   unicorn:
-#     enabled: false
+  # unicorn:
+  #   enabled: true
+  #   backups:
+  #     objectStorage:
+  #       config:
+  #         secret: "backup-secret"
+
 ## doc/charts/gitlab/sidekiq
-#   sidekiq:
-#     enabled: false
+  # sidekiq:
+  #   enabled: true
+  #   backups:
+  #     objectStorage:
+  #       config:
+  #         secret: "backup-secret"
 ## doc/charts/gitlab/gitaly
 #   gitaly:
 #     enabled: false
