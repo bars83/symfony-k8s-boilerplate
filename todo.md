@@ -65,9 +65,19 @@ k8s
     * `helm install --namespace monitoring --name prometheus -f ./infra/k8s-monitoring/prom_custom.yaml stable/prometheus`
     * `helm install --namespace monitoring --name grafana -f ./infra/k8s-monitoring/grafana_custom.yaml stable/grafana`
     * `kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo`
+    * `kubectl apply -f infra/dashboard-ingress.yaml`
+    * `helm install --name zalando --namespace zalando ./infra/zalando/charts/postgres-operator`
+    * `kubectl create -f infra/zalando/manifests/minimal-postgres-manifest.yaml`
+    * `kubectl label nodes node3 largemem=true`
+    * `helm repo add gitlab https://charts.gitlab.io && helm repo update`
+    * `helm fetch gitlab/gitlab --untar --untardir ./infra/gitlab/`
+    * `kubectl create secret generic gitlab-gitlab-initial-root-password --from-literal=password=$(head -c 512 /dev/urandom | LC_CTYPE=C tr -cd 'a-zA-Z0-9' | head -c 32) && kubectl get secret gitlab-gitlab-initial-root-password -ojsonpath='{.data.password}' | base64 --decode ; echo`
+
+
+
 
 export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
-  kubectl --namespace monitoring port-forward $POD_NAME 9090
+  kubectl --namespace monitoring port-forward $POD_NAME 9095:9090
 
  kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml
  
