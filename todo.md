@@ -53,9 +53,7 @@ k8s
     * `sudo mount /dev/sdb /mnt/disks/sdb`
     * `cd /mnt/disks/sdb/`
     * `sudo chown -R appuser:appuser .`
-    * `mkdir prometheus`
-    * `mkdir elasticsearch`
-    * `mkdir postgres`
+    * `mkdir comon`
     * `sudo apt update && sudo apt install -y nfs-common`
     * `helm install --name nfs-client-provisioner --namespace kube-system --set nfs.server=10.128.15.212 --set nfs.path=/mnt/disks/sdb/common --set storageClass.defaultClass=true stable/nfs-client-provisioner`
     * `helm install --name nginx-ingress --namespace kube-system -f ./infra/k8s-ingress/custom_values.yaml stable/nginx-ingress`
@@ -73,6 +71,19 @@ k8s
     * `helm install --namespace gitlab --name gitlab -f ./infra/gitlab/custom_values.yaml gitlab/gitlab`
     * `kubectl get secret -n gitlab gitlab-gitlab-initial-root-password -ojsonpath='{.data.password}' | base64 --decode ; echo`
     * `echo 'access_key:';kubectl get secret -n gitlab gitlab-minio-secret -ojsonpath='{.data.accesskey}' | base64 --decode ; echo && echo 'secret_key:'; kubectl get secret -n gitlab gitlab-minio-secret -ojsonpath='{.data.secretkey}' | base64 --decode ; echo`
+    * `kubectl label nodes node3 elastichost=true`
+
+    * `kubectl create ns logging`
+    * `kubectl label nodes node1 beta.kubernetes.io/fluentd-ds-ready=true`
+    * `kubectl label nodes node2 beta.kubernetes.io/fluentd-ds-ready=true`
+    * `kubectl label nodes node3 beta.kubernetes.io/fluentd-ds-ready=true`
+    * `kubectl label nodes node4 beta.kubernetes.io/fluentd-ds-ready=true`
+    #* `kubectl create serviceaccount --namespace logging logging`
+    #* `kubectl create clusterrolebinding logging-cluster-rule --clusterrole=cluster-admin --serviceaccount=logging:logging`
+    * `kubectl apply -f ./infra/efk/ef -n logging`
+    * `helm repo add elastic https://helm.elastic.co`
+    * `helm install --namespace logging --name elasticsearch -f ./infra/efk/elastic_custom_values.yaml elastic/elasticsearch`
+    * `helm install --namespace logging --name kibana -f ./infra/efk/kibana_custom_values.yaml elastic/kibana`
 
 
 
