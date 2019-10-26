@@ -11,7 +11,8 @@ ingress:
     - hosts:
       - kibana.kubeplay.website
       secretName: kibana-letsencrypt-prod
-# elasticsearchHosts: "http://elasticsearch-logging:9200"
+# elasticsearchHosts: "http://elasticsearch-master:9200"
+elasticsearchURL: "http://elasticsearch-master:9200"
 imageTag: 6.5.4
 nodeSelector:
    elastichost: "true"

@@ -1,3 +1,5 @@
 imageTag: 6.5.4
-nodeSelector:
-   elastichost: "true"
+replicas: 1
+minimumMasterNodes: 1
+# nodeSelector:
+   # elastichost: "true"
