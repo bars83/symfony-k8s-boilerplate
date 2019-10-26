@@ -61,7 +61,7 @@ global:
     class: nginx
     tls:
       enabled: true
-      secretName: letsencrypt-prod
+      # secretName: global-letsencrypt-prod
 
   ## Initial root password for this GitLab installation
   ## Secret created according to doc/installation/secrets.md#initial-root-password
@@ -372,7 +372,7 @@ certmanager:
 ## doc/architecture/decisions.md#nginx-ingress
 ## Installation & configuration of charts/nginx
 nginx-ingress:
-  enabled: true
+  enabled: false
   tcpExternalConfig: "true"
   controller:
     config:
@@ -464,9 +464,16 @@ postgresql:
 ## Installation & configuration charts/registry
 ## doc/architecture/decisions.md#registry
 ## doc/charts/registry/
-# registry:
-#   enabled: false
+registry:
+  enabled: true
+  ingress:
+    tls:
+      secretName: registry-letsencrypt-prod
 
+minio:
+    ingress:
+      tls:
+        secretName: minio-letsencrypt-prod
 
 ## Automatic shared secret generation
 ## doc/installation/secrets.md
@@ -537,7 +544,7 @@ grafana:
 
 ## Settings for individual sub-charts under GitLab
 ## Note: Many of these settings are configurable via globals
-# gitlab:
+gitlab:
 #   task-runner:
 #     backups:
 #       objectStorage:
@@ -547,8 +554,12 @@ grafana:
 #   migrations:
 #     enabled: false
 ## doc/charts/gitlab/unicorn
-  # unicorn:
-  #   enabled: true
+  unicorn:
+    enabled: true
+    ingress:
+      tls:
+        secretName: unicorn-letsencrypt-prod
+    
   #   backups:
   #     objectStorage:
   #       config:
