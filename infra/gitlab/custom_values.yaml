@@ -270,6 +270,7 @@ global:
   ## If allowing shared-secrets generation, this is OPTIONAL.
   runner:
     registrationToken: {}
+    
       # secret:
 
   ## doc/installation/deployment.md#outgoing-email
@@ -486,10 +487,12 @@ shared-secrets:
 ## Installation & configuration of gitlab/gitlab-runner
 ## See requirements.yaml for current version
 gitlab-runner:
-  install: true
+  install: true  
   rbac:
     create: true
   runners:
+    image: gitlab/gitlab-runner:v12.4.0
+    privileged: true
     locked: false
     cache:
       cacheType: s3

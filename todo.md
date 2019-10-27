@@ -82,10 +82,28 @@ k8s
     * `helm repo add elastic https://helm.elastic.co`
     * `helm install --namespace logging --name elasticsearch -f ./infra/efk/elastic_custom_values.yaml elastic/elasticsearch`
     * `helm install --namespace logging --name kibana -f ./infra/efk/kibana_custom_values.yaml elastic/kibana`
+    * `kubectl create secret generic basic-auth --from-file=auth -n mailhog`
+    * `helm install --name mailhog --namespace mailhog -f ./infra/mailhog/custom_values.yaml stable/mailhog`
+
+    * `ansible-playbook -i ./infra/kubespray-cluster-vars/inventory.ini --become ./infra/kubespray/scale.yml --private-key=~/.ssh/appuser`
 
     ###* `htpasswd -c auth kibana`
     ###* `kubectl create secret generic basic-auth --from-file=auth -n logging && rm auth`
     * kubep!ay
+
+
+mai!h0g
+
+
+Host gitlab.kubeplay.website
+User git
+Port 50022
+Hostname gitlab.kubeplay.website
+
+
+
+https://github.com/docker-library/docker/issues/103 - gitlab-runner and MTU
+
 
 curl -v -XPOST http://10.233.92.15:3000/api/dashboards/import --cookie grafana_session=2ff0d4258dadb4a4a475768574dc917c -d @grafana_import_payload.json
 

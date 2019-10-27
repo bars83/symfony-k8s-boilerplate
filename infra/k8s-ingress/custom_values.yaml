@@ -1,12 +1,16 @@
 controller:
-  replicaCount: 2
+  replicaCount: 1
   service:
     type: NodePort
     nodePorts:
       http: 30665
       https: 30177
+      tcp:
+        50022: 30022
   metrics:
     enabled: true
+tcp:
+  50022: "gitlab/gitlab-gitlab-shell:22"
 #   nodeSelector:
 #     external: "true"
 # controller:
