@@ -1,9 +1,12 @@
 controller:
+  replicaCount: 2
   service:
     type: NodePort
     nodePorts:
       http: 30665
       https: 30177
+  metrics:
+    enabled: true
 #   nodeSelector:
 #     external: "true"
 # controller:

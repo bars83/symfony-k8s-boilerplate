@@ -7,3 +7,4 @@ infra/k8s-monitoring/prometheus-chart
 infra/k8s-metrics
 infra/zalando
 infra/gitlab/gitlab
+grafana_import_payload.json

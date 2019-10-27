@@ -78,13 +78,16 @@ k8s
     * `kubectl label nodes node2 beta.kubernetes.io/fluentd-ds-ready=true`
     * `kubectl label nodes node3 beta.kubernetes.io/fluentd-ds-ready=true`
     * `kubectl label nodes node4 beta.kubernetes.io/fluentd-ds-ready=true`
-    #* `kubectl create serviceaccount --namespace logging logging`
-    #* `kubectl create clusterrolebinding logging-cluster-rule --clusterrole=cluster-admin --serviceaccount=logging:logging`
-    * `kubectl apply -f ./infra/efk/ef -n logging`
+    * `kubectl apply -f ./infra/efk/fluentd -n logging`
     * `helm repo add elastic https://helm.elastic.co`
     * `helm install --namespace logging --name elasticsearch -f ./infra/efk/elastic_custom_values.yaml elastic/elasticsearch`
     * `helm install --namespace logging --name kibana -f ./infra/efk/kibana_custom_values.yaml elastic/kibana`
 
+    ###* `htpasswd -c auth kibana`
+    ###* `kubectl create secret generic basic-auth --from-file=auth -n logging && rm auth`
+    * kubep!ay
+
+curl -v -XPOST http://10.233.92.15:3000/api/dashboards/import --cookie grafana_session=2ff0d4258dadb4a4a475768574dc917c -d @grafana_import_payload.json
 
 
 

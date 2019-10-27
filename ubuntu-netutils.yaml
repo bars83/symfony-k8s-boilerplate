@@ -6,9 +6,8 @@ spec:
   containers:
   - name: ubuntu-netutils
     image: ubuntu
-    command: ['sh', '-c', 'apt update && apt install -y curl dnsutils iputils-ping; sleep 3600;']
+    command: ['sh', '-c', 'apt update && apt install -y curl dnsutils iputils-ping nano; sleep 86400;']
     imagePullPolicy: IfNotPresent
   restartPolicy: Always
   nodeSelector:
-    name: node3
-      
+    name: node1
