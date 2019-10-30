@@ -13,6 +13,9 @@
     * https://github.com/thecodingmachine/symfony-vuejs
 * unit tests
 * prometheus endpoints
+* json logs for each service
+
+
 
 
 ---
@@ -89,9 +92,57 @@ k8s
 
     ###* `htpasswd -c auth kibana`
     ###* `kubectl create secret generic basic-auth --from-file=auth -n logging && rm auth`
-    * kubep!ay
+
+    * `kubectl get secret default-token-5dgbm -o jsonpath="{['data']['ca\.crt']}" | base64 --decode `
+    * `kubectl apply -f ./infra/gitlab/gitlab-admin-service-account.yaml`
+    * `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep gitlab-admin | awk '{print $1}')`
+    * ``
 
 
+
+metrics
+alerting
+gitlab ci envs
+rancher?
+
+
+
+https://gitlab.com/gitlab-org/gitlab-foss/issues/51573 - canary
+    
+    
+helm upgrade --install \
+      --wait \
+      --set ui.ingress.host="staging-ui.kubeplay.website" \
+      --set ui.image.tag="0.0.1" \
+      --set post.image.tag="0.0.2" \
+      --set comment.image.tag="0.0.3" \
+      --set comment.image.repo="registry.kubeplay.website/devops" \
+      --set ui.image.repo="registry.kubeplay.website/devops" \
+      --set post.image.repo="registry.kubeplay.website/devops" \
+      --namespace="staging" \
+      --version="7-23" \
+      staging \
+      reddit
+
+
+helm upgrade --install \
+      --wait \
+      --set ui.ingress.host="devops-reddit-deploy-staging.kubeplay.website" \
+      --set ui.image.tag="0.0.1" \
+      --set post.image.tag="0.0.2" \
+      --set comment.image.tag="0.0.3" \
+      --set ui.image.name="registry.kubeplay.website/devops/ui" \
+      --set post.image.name="registry.kubeplay.website/devops/post" \
+      --set comment.image.name="registry.kubeplay.website/devops/comment" \
+      --set ui.image.secret="gitlab-registry" \
+      --set post.image.secret="gitlab-registry" \
+      --set comment.image.secret="gitlab-registry" \
+      --namespace="staging" \
+      --version="30-94" \
+      "staging" \
+      reddit
+
+kubep!ay
 mai!h0g
 
 
@@ -109,8 +160,7 @@ curl -v -XPOST http://10.233.92.15:3000/api/dashboards/import --cookie grafana_s
 
 
 
-export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
-  kubectl --namespace monitoring port-forward $POD_NAME 9095:9090
+export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}"); kubectl --namespace monitoring port-forward $POD_NAME 9095:9090
 
  kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml
  
@@ -213,3 +263,21 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 
 helm upgrade mattermost -f ./mattermost/custom.yaml mattermost/mattermost-team-edition
 helm install --name prometheus stable/prometheus
+
+
+
+
+gcloud filestore instances create nfs-server \
+    --project=[PROJECT_ID] \
+    --zone=us-central1-c \
+    --tier=STANDARD \
+    --file-share=name="vol1",capacity=1TB \
+    --network=name="default"
+
+
+
+sudo apt-get -y update
+sudo apt-get -y install nfs-common
+sudo mkdir /mnt/test
+sudo mount 10.0.0.2:/vol1 /mnt/test
+sudo chmod go+rw /mnt/test    

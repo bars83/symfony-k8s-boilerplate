@@ -1000,19 +1000,30 @@ pushgateway:
 ##
 alertmanagerFiles:
   alertmanager.yml:
-    global: {}
-      # slack_api_url: ''
-
+    global:
+      slack_api_url: 'https://mm.kubeplay.website/hooks/6f4gdy3mpjfwumajsif4wh1tso'
     receivers:
-      - name: default-receiver
-        # slack_configs:
-        #  - channel: '@you'
-        #    send_resolved: true
-
+      - name: mattermost
+        slack_configs:
+        - api_url: https://mm.kubeplay.website/hooks/6f4gdy3mpjfwumajsif4wh1tso
+          title: >-
+            {{ range .Alerts }}
+              Alert: {{ .Annotations.summary }}
+            {{ end }}
+          text: >-
+            {{ range .Alerts }}
+              *Alert:* {{ .Annotations.summary }} - `{{ .Labels.severity }}`
+              *Description:* {{ .Annotations.description }}
+              *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:> *Runbook:* <{{ .Annotations.runbook }}|:spiral_note_pad:>
+              *Details:*
+              {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+              {{ end }}
+            {{ end }}
+        
     route:
       group_wait: 10s
       group_interval: 5m
-      receiver: default-receiver
+      receiver: mattermost
       repeat_interval: 3h
 
 ## Prometheus server ConfigMap entries
@@ -1021,18 +1032,48 @@ serverFiles:
 
   ## Alerts configuration
   ## Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
-  alerts: {}
-  # groups:
-  #   - name: Instances
-  #     rules:
-  #       - alert: InstanceDown
-  #         expr: up == 0
-  #         for: 5m
-  #         labels:
-  #           severity: page
-  #         annotations:
-  #           description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.'
-  #           summary: 'Instance {{ $labels.instance }} down'
+  alerts: 
+    groups:
+      - name: Nodes
+        rules:
+          - alert: InstanceDown
+            expr: up{job="kubernetes-nodes"} == 0
+            for: 1m
+            labels:
+              severity: page
+            annotations:
+              description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minutes.'
+              summary: 'Instance {{ $labels.instance }} down'
+      - name: symvue-test
+        rules:
+          - alert: TestEndointsDown
+            expr: up{component="web", release="symvue-test"} == 0
+            for: 1m
+            labels:
+              severity: page
+            annotations:
+              description: 'Test {{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minutes.'
+              summary: 'Test instance {{ $labels.instance }} down'
+      - name: symvue
+        rules:
+          - alert: TestEndointsDown
+            expr: up{component="web", release="symvue"} == 0
+            for: 1m
+            labels:
+              severity: page
+            annotations:
+              description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minutes.'
+              summary: 'Instance {{ $labels.instance }} down'
+      - name: symvue-post-count
+        rules:
+          - alert: Count
+            expr: post_count > 5
+            for: 1m
+            labels:
+              severity: page
+            annotations:
+              description: 'Release {{ $labels.release }} has more then 5 posts'
+              summary: 'Release {{ $labels.release }} posts count alert'
 
   rules: {}
 
@@ -1295,6 +1336,33 @@ serverFiles:
           - source_labels: [__meta_kubernetes_pod_name]
             action: replace
             target_label: kubernetes_pod_name
+
+      - job_name: 'symvue-web-endpoints'
+        kubernetes_sd_configs:
+          - role: endpoints
+        relabel_configs:
+          - action: labelmap
+            regex: __meta_kubernetes_service_label_(.+)
+          - source_labels: [__meta_kubernetes_service_label_component]
+            action: keep
+            regex: web
+          - source_labels: [__meta_kubernetes_namespace]
+            target_label: kubernetes_namespace
+          - source_labels: [__meta_kubernetes_service_name]
+            target_label: kubernetes_name
+      # - job_name: 'symvue-php-endpoints'
+      #   kubernetes_sd_configs:
+      #     - role: endpoints
+      #   relabel_configs:
+      #     - action: labelmap
+      #       regex: __meta_kubernetes_service_label_(.+)
+      #     - source_labels: [__meta_kubernetes_service_label_component]
+      #       action: keep
+      #       regex: php
+      #     - source_labels: [__meta_kubernetes_namespace]
+      #       target_label: kubernetes_namespace
+      #     - source_labels: [__meta_kubernetes_service_name]
+      #       target_label: kubernetes_name
 
 # adds additional scrape configs to prometheus.yml
 # must be a string so you have to add a | after extraScrapeConfigs:

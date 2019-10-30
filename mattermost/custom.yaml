@@ -1,5 +1,5 @@
 image:
-  tag: 5.16.0
+  tag: 5.16.1
 
 ingress:
   enabled: true
