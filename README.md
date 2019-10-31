@@ -70,6 +70,13 @@
   * `helm install --name cert-manager --namespace cert-manager jetstack/cert-manager`
   * `kubectl apply -f infra/k8s-letsencrypt/letsencrypt.yaml`
 
+### Доступ к Kubernetes Dashboard (установлено kubespray'ем)
+  * `kubectl apply -f ./infra/dashboard-adminuser.yaml`
+  * `kubectl apply -f infra/dashboard-ingress.yaml`
+  * `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')` - получение токена
+  * панель доступна по ссылке https://dash.kubeplay.website токен для доступа - на предыдущем шаге
+
+
 ### Установка мессенджера Mattermost
   * `helm install --name mattermost -f ./mattermost/custom.yaml mattermost/mattermost-team-edition`
 
