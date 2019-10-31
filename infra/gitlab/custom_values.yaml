@@ -496,6 +496,16 @@ gitlab-runner:
     locked: false
     nodeSelector:
       gitlab-runner: true
+    # Kubernetes Volumes
+    # Define volumes to be mounted to service containers
+    # ref: https://docs.gitlab.com/runner/executors/kubernetes.html#using-volumes
+    #
+    kubernetes:
+      volumes:
+      - type: "host_path"
+        name: "docker-socket"
+        path: "/var/run/docker.sock"
+        mount_path: "/var/run/docker.sock"
     cache:
       cacheType: s3
       s3BucketName: runner-cache
