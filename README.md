@@ -78,6 +78,7 @@
 
 
 ### Установка мессенджера Mattermost
+  * `helm repo add mattermost https://helm.mattermost.com`
   * `helm install --name mattermost -f ./mattermost/custom.yaml mattermost/mattermost-team-edition`
 
 
