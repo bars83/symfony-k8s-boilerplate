@@ -71,6 +71,7 @@ k8s
     * `kubectl create -f infra/zalando/manifests/minimal-postgres-manifest.yaml`
     * `kubectl label nodes node3 largemem=true`
     * `helm repo add gitlab https://charts.gitlab.io && helm repo update`
+    * `kubectl label nodes node3 gitlab-runer=true`
     * `helm install --namespace gitlab --name gitlab -f ./infra/gitlab/custom_values.yaml gitlab/gitlab`
     * `kubectl get secret -n gitlab gitlab-gitlab-initial-root-password -ojsonpath='{.data.password}' | base64 --decode ; echo`
     * `echo 'access_key:';kubectl get secret -n gitlab gitlab-minio-secret -ojsonpath='{.data.accesskey}' | base64 --decode ; echo && echo 'secret_key:'; kubectl get secret -n gitlab gitlab-minio-secret -ojsonpath='{.data.secretkey}' | base64 --decode ; echo`

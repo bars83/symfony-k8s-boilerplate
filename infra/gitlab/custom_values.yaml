@@ -489,11 +489,13 @@ shared-secrets:
 gitlab-runner:
   install: true  
   rbac:
-    create: true
+    create: true  
   runners:
     image: gitlab/gitlab-runner:v12.4.0
     privileged: true
     locked: false
+    nodeSelector:
+      gitlab-runner: true
     cache:
       cacheType: s3
       s3BucketName: runner-cache
