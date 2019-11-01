@@ -11,3 +11,5 @@ grafana_import_payload.json
 reddit-app
 auth
 gitlab-runner-envs.json
+infra/rancher-cluster/kube_config_rancher-cluster.yml
+infra/rancher-cluster/rancher-cluster.rkestate

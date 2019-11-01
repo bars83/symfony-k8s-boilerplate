@@ -1,0 +1,13 @@
+hostname: rancher.kubeplay.website
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - rancher.kubeplay.website
+  tls:
+    - hosts:
+      - rancher.kubeplay.website
+      secretName: rancher-letsencrypt-prod

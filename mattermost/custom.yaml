@@ -22,7 +22,7 @@ configJSON:
     SiteName: "Mattermost on kubeplay.website"
     EnableOpenServer: false
   EmailSettings:
-    EnableSignUpWithEmail: false
+    EnableSignUpWithEmail: true
   
 
 mysql:

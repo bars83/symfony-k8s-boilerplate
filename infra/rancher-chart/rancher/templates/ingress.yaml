@@ -1,0 +1,35 @@
+{{ $ingress := .Values.ingress }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "rancher.fullname" . }}
+  labels:
+    app: {{ template "rancher.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+  annotations:
+    {{- if .Values.ingress.tls }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    {{- else }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    {{- end }}
+    {{- with $ingress.annotations }}
+    {{- . | toYaml | nindent 4 }}
+    {{- end }}
+spec:
+  rules:
+  {{ range $host := $ingress.hosts }}
+  - host: {{ $host }}
+    http:
+      paths:
+      - path: {{ $ingress.path }}
+        backend:
+          serviceName: rancher
+          servicePort: 80
+  {{ end }}
+  {{ if $ingress.tls }}
+  tls:
+    {{- $ingress.tls | toYaml | nindent 4 }}
+  {{ end }}
