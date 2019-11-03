@@ -110,7 +110,6 @@
   
 
 ### Доступ к Kubernetes Dashboard
-  * `kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml`
   * `kubectl apply -f ./infra/dashboard-adminuser.yaml`
   * `kubectl apply -f infra/dashboard-ingress.yaml`
   * `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')` - получение токена
