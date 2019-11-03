@@ -90,7 +90,6 @@
 ```
   * На каждой ВМ кластера установить NFS клиент (лучше это сделать тоже с помощью ansible, но в рамках курсовой работы сделано руками... )
     * `sudo apt update && sudo apt install -y nfs-common`
-  * Т.к. helm уже установлен при развёртывании через kubespray, достаточно убедиться в наличии клиента, далее можем использовать его
   * Установка [NFS client provisioner](https://github.com/kubernetes-incubator/external-storage/tree/master/nfs-client)
     * `helm install --name nfs-client-provisioner --namespace kube-system --set nfs.server=10.191.255.26 --set nfs.path=/vol1 --set storageClass.defaultClass=true stable/nfs-client-provisioner`
 
