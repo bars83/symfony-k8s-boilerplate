@@ -66,7 +66,7 @@
     * `mv rke /usr/local/bin/rke`
     * `rke --version`
   * Развёртывание кластера:
-    * `rke up --config infra/rancher-cluster/rancher-cluster.yml `
+    * `rke up --config infra/rancher-cluster/rancher-cluster.yml`
 
 
 
@@ -91,7 +91,7 @@
   * На каждой ВМ кластера установить NFS клиент (лучше это сделать тоже с помощью ansible, но в рамках курсовой работы сделано руками... )
     * `sudo apt update && sudo apt install -y nfs-common`
   * Установка [NFS client provisioner](https://github.com/kubernetes-incubator/external-storage/tree/master/nfs-client)
-    * `helm install --name nfs-client-provisioner --namespace kube-system --set nfs.server=10.191.255.26 --set nfs.path=/vol1 --set storageClass.defaultClass=true stable/nfs-client-provisioner`
+    * `helm install --name nfs-client-provisioner --namespace kube-system --set nfs.server=10.128.15.213 --set nfs.path=/mnt/disks/sdb/common --set storageClass.defaultClass=true stable/nfs-client-provisioner`
 
 ### Установка Nginx ingress controller
   * `helm install --name nginx-ingress --namespace kube-system -f ./infra/k8s-ingress/custom_values.yaml stable/nginx-ingress`
@@ -158,7 +158,7 @@
   * `helm install --namespace logging --name kibana -f ./infra/efk/kibana_custom_values.yaml elastic/kibana`
 
 ### Панель управления Rancher Kubernetes Engine (для соответствующего варианта установки)
-  * `helm install --namespace cattle-system --name rancher -f ./infra/rancher-cluster/helm_custom.yaml ./infra/rancher-chart`
+  * `helm install --namespace cattle-system --name rancher -f ./infra/rancher-cluster/helm_custom.yaml ./infra/rancher-chart/rancher`
 
 ---
 ## Приложение

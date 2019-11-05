@@ -1001,11 +1001,11 @@ pushgateway:
 alertmanagerFiles:
   alertmanager.yml:
     global:
-      slack_api_url: 'https://mm.kubeplay.website/hooks/x5w869y6nbnspy36wjeehqtjfh'
+      slack_api_url: 'https://mm.kubeplay.website/hooks/jkikedkqefrfbmndrbk7n5iwno'
     receivers:
       - name: mattermost
         slack_configs:
-        - api_url: https://mm.kubeplay.website/hooks/x5w869y6nbnspy36wjeehqtjfh
+        - api_url: https://mm.kubeplay.website/hooks/jkikedkqefrfbmndrbk7n5iwno
           title: >-
             {{ range .Alerts }}
               Alert: {{ .Annotations.summary }}
